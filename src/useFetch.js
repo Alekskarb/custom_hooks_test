@@ -1,4 +1,4 @@
-import {useCallback, useReducer, useState} from "react";
+import {useCallback, useEffect, useReducer, useState} from "react";
 
 export function useFetch(url) {
     // const initState = {data: []};
@@ -6,37 +6,44 @@ export function useFetch(url) {
     //     state = action.res
     //     return state
     // }
-    const [serverData, setServerData] = useState(null);
+    const [data, setServerData] = useState(null);
     // const [serverData, dispatch] = useReducer(reducer, initState);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    // useEffect(() => { loadInitialTodos() }, []) // componentDidMount
-    //
-    // async function loadInitialTodos() {
-    //     const initialTodos = await get('/todos')
-    //     if (response.ok) setTodos(initialTodos)
-    // }
+    function fetchServer() {
+        setLoading(true)
+        fetch(url).then(response => response.json()
+    ).then(res => {
+            setServerData(res)
+        })
+            .catch(error => setError(error))
+            .finally((end) => {
+                setLoading(false)
+            });
+    }
 
-    async function reFetch(params) {
-        fetch(url, [params]).then(response => {
-            setLoading(true)
-            // dispatch({response.json()})
-
-            return response.json();
-        }).then(res => {
+ function reFetch(params) {
+        setLoading(true)
+        fetch(`${url}?_limit=${params.params._limit}`).then(response => response.json()
+    ).then(res => {
             // dispatch({res})
             setServerData(res)
         })
             .catch(error => setError(error))
             .finally((end) => {
                 setLoading(false)
-                // dispatch()
             });
     }
 
+    useEffect(() => {
+        if (url) {
+            fetchServer()
+        }
+    }, []);
+
     return {
-        serverData,
+        data,
         isLoading,
         error,
         reFetch

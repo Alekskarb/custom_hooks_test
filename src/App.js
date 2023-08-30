@@ -2,11 +2,6 @@ import './App.css';
 import {useFetch} from "./useFetch";
 
 function App() {
-    // const [data, setServerData] = useState(data);
-    // useEffect(() => {
-    //     setServerData(data)
-    // }, [data]);
-
     const {
         data,
         isLoading,
