@@ -1,24 +1,21 @@
 import './App.css';
-// import {useFetch} from "./useFetch";
-
-import { useLocalStorage } from './useLocalStorage';
+// import {useHover} from "./useHover";
+import {useRef, useState} from "react";
+import {useHover} from "./useHover";
 
 function App() {
-    const [token, { setItem, removeItem }] = useLocalStorage('token');
+    // const refHover = useRef(null)
+    const [hover, setHover] = useState(null)
+    // const {hovered, ref} = useHover(hover, refHover)
+    const handler = (event, isHover) => {
+        // ref.current = isHover
+        setHover(isHover)
+    }
 
     return (
-        <div>
-            <p>
-                Твой токен: { token }
-            </p>
-            <div>
-                <button onClick={() => setItem('new-token')}>
-                    Задать токен
-                </button>
-                <button onClick={() => removeItem()}>
-                    Удалить токен
-                </button>
-            </div>
+        <div onMouseOver={(e) => handler(e, true)} onMouseLeave={(e) => handler(e, false)}>
+        {/*<div ref={ref}>*/}
+            {hover ? 'На меня навели мышку' : 'Наведи мышкой на меня'}
         </div>
     );
 }
