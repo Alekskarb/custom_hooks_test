@@ -1,27 +1,28 @@
 import './App.css';
-import {useViewportSize} from "./useViewportSize";
 import {useWindowEvent} from "./useWindowEvent";
-import {useEffect, useRef, useState} from "react";
+import { useState} from "react";
 import {useWindowScroll} from "./useWindowScroll";
 
 function App() {
-    const [scrollX, setScrollX] = useState(window.scrollY);
-    const [scrollY, setScrollY] = useState(window.scrollY);
+    const [scrollX, setScrollX] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
 
     function eventHandler(event) {
-        setScrollX(event.target.scrollX);
-        setScrollY(event.target.scrollY);
+        // setScrollX(event.currentTarget.screenX);
+        // setScrollY(event.currentTarget.screenY);
+        setScrollX(event.currentTarget.scrollX);
+        setScrollY(event.currentTarget.scrollY);
     }
-    useWindowEvent('resize', eventHandler, []);
+    useWindowEvent('scroll', eventHandler, []);
 
-    const [scroll, scrollTo] = useWindowScroll();
+    const {scroll, scrollTo} = useWindowScroll(scrollX, scrollY);
 
     return (
-        <div>
+        <div className='App-header'>
             <p>
-                Scroll position x: {scroll.x}, y: {scroll.y}
+                Scroll position X: {scroll.x}, Y: {scroll.y}
             </p>
-            <button onClick={() => scrollTo({y: 0})}>Scroll to top</button>
+            <button onClick={() => scrollTo({y: 99})}>Scroll to top</button>
         </div>
     );
 }
