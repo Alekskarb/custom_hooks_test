@@ -1,18 +1,21 @@
 import {useEffect, useState} from "react";
 
-let scroll = {}
+// let scroll = {}
 
 export function useWindowScroll(initX, initY) {
-    scroll = {
-        x: initX,
-        y: initY,
+    const [scrollX, setScrollX] = useState(initX);
+    const [scrollY, setScrollY] = useState(initY);
+
+    let scroll = {
+        x: scrollX,
+        y: scrollY,
     }
-    const [scrollX, setScrollX] = useState('');
-    const [scrollY, setScrollY] = useState('');
 
     function scrollTo(coordinates) {
         let newY = coordinates.y;
         scroll = {x: scrollX, y: newY}
+        setScrollY(newY)
+        setScrollX(scrollX)
         // console.log(scroll)
         // up(scroll);
         // return scroll;
@@ -30,11 +33,10 @@ export function useWindowScroll(initX, initY) {
     useEffect(() => {
         // setScrollY(initY);
         // setScrollX(initX);
-        setScrollY(scroll.y);
-        setScrollY(scrollY);
+        setScrollX(initX);
+        setScrollY(initY);
 
-        setScrollX(scroll.x);
-    }, [scroll]);
+    }, [scrollX, scrollY]);
 
     // console.log(scroll = newScroll)
 
