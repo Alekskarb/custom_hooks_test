@@ -1,23 +1,24 @@
 import './App.css';
-// import {useHover} from "./useHover";
-import {useRef, useState} from "react";
-import {useHover} from "./useHover";
+import {useViewportSize} from "./useViewportSize";
+import {useWindowEvent} from "./useWindowEvent";
+import {useEffect, useRef, useState} from "react";
 
 function App() {
-    // const refHover = useRef(null)
-    const [hover, setHover] = useState(null)
-    // const {hovered, ref} = useHover(hover, refHover)
-    const handler = (event, isHover) => {
-        // ref.current = isHover
-        setHover(isHover)
+    const [iHeight, setHeight] = useState(window.innerHeight);
+    const [iWidth, setWidth] = useState(window.innerWidth);
+
+    function eventHandler(event) {
+        setHeight(event.target.innerHeight);
+        setWidth(event.target.innerWidth);
     }
+    useWindowEvent('resize', eventHandler, []);
+    const {height, width} = useViewportSize(iHeight, iWidth);
 
     return (
-        <div onMouseOver={(e) => handler(e, true)} onMouseLeave={(e) => handler(e, false)}>
-        {/*<div ref={ref}>*/}
-            {hover ? 'На меня навели мышку' : 'Наведи мышкой на меня'}
-        </div>
-    );
+        <>
+            <div> Width: {width}, Height: {height} </div>
+        </>
+    )
 }
 
 export default App;
